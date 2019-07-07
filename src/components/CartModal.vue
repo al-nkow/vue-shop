@@ -1,56 +1,41 @@
 <template>
   <div
-    class="overlay"
+    class="js-close overlay"
     v-if="cartModal"
     @click="close"
   >
     <div class="cart-modal-wrap">
-      <div class="table-wrap">
-        <table class="cart-table">
-          <thead>
-            <tr>
-              <th width="40">Наименование товара</th>
-              <th width="20">Кол-во</th>
-              <th width="30">Цена</th>
-              <th width="10"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in goods">
-              <td>{{ item.product_name }}</td>
-              <td>{{ item.cart }}</td>
-              <td>{{ item.price }} руб.</td>
-              <td>
-                <v-icon class="delete" name="trash-alt"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <CartTable />
       <div class="total">
         Итого:
         <span class="total-price">{{ amount }}</span>
         <span class="rub">₽</span>
+      </div>
+      <div class="js-close close-but">
+        Закрыть
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import CartTable from './CartTable.vue'
   import { mapState } from 'vuex';
 
   export default {
     name: 'CartModal',
+    components: {
+      CartTable
+    },
     methods: {
-      close: function(event) {
-        if (event.target.classList[0] === 'overlay') {
+      close(event) {
+        if (event.target.classList[0] === 'js-close') {
           this.$store.commit('TOGGLE_CART', false)
         }
-      }
+      },
     },
     computed: mapState({
       cartModal: state => state.cartModal,
-      goods: state => state.goods.filter(item => item.cart),
       amount: state => state.amount
     })
   }
@@ -78,21 +63,6 @@
     padding: 10px;
     box-sizing: border-box;
   }
-  .cart-table {
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-  .cart-table td {
-    border-top: 1px solid #d3d7e6;
-    border-bottom: 1px solid #d3d7e6;
-  }
-  .cart-table td, .cart-table th {
-    padding: 10px 20px;
-  }
   .total {
     padding: 20px;
     text-align: left;
@@ -102,17 +72,17 @@
   .rub {
     margin-left: 5px;
   }
-  .table-wrap {
-    max-height: 400px;
-    overflow: auto;
-  }
-  .delete {
-    width: 18px;
-    height: 20px;
-    color: #5c6073;
+  .close-but {
+    position: absolute;
+    right: 10px;
+    bottom: 22px;
+    padding: 8px 16px;
+    border-radius: 2px;
+    color: #ffffff;
+    background: #70a795;
     cursor: pointer;
   }
-  .delete:hover {
-    color: #f34d4d;
+  .close-but:hover {
+    background: #51796c;
   }
 </style>

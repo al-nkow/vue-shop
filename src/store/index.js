@@ -51,6 +51,13 @@ export const store = new Vuex.Store({
         }
       });
     },
+    REMOVE_FROM_CART: (state, payload) => {
+      state.goods.forEach((item, index) => {
+        if (item.T === payload) {
+          state.goods[index].cart = 0
+        }
+      });
+    },
     UPDATE_PRICE: (state) => {
       const { rate, goods } = state;
       goods.forEach((item) => {
