@@ -5,7 +5,7 @@
       {{ data[0].group_name }}
     </div>
     <div class="products" v-if="show">
-      <Product v-for="item in data" :data="item"/>
+      <Product v-for="item in data" :data="item" :key="item.T"/>
     </div>
   </div>
 </template>

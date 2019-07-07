@@ -1,14 +1,27 @@
 <template>
   <div class="wrap">
+    <div v-if="data.cart" class="budget">
+      <v-icon class="busket" name="shopping-basket"/>
+    </div>
     <div class="title">
       {{ data.product_name }}
     </div>
     <div class="controls">
-      <div class="add">
+      <div
+        class="add"
+        :class="{'disabled': data.P === data.cart}"
+        @click="addToCart()"
+      >
         <v-icon class="cart" name="cart-plus"/>
       </div>
       <div class="amount">({{ data.P }})</div>
-      <div class="price">
+      <div
+        class="price"
+        :class="{
+          'up': data.prevPrice && (data.prevPrice < data.price),
+          'down': data.prevPrice && (data.prevPrice > data.price)
+        }"
+      >
         {{ data.price }}
         <span>₽</span>
       </div>
@@ -21,6 +34,17 @@
     name: 'Product',
     props: {
       data: Object
+    },
+    methods: {
+      addToCart() {
+        if (this.data.P === this.data.cart) return;
+        this.$store.commit('ADD_TO_CART', this.data.T);
+        this.$toasted.show('Товар добавлен в корзину', {
+          position: 'top-right',
+          duration: 1000,
+          className: 'good'
+        })
+      }
     }
   }
 </script>
@@ -35,6 +59,7 @@
     width: 200px;
     padding: 20px;
     vertical-align: top;
+    position: relative;
   }
   .add {
     color: #ffffff;
@@ -50,6 +75,10 @@
   }
   .add:hover {
     background: #51796c;
+  }
+  .add.disabled, .add.disabled:hover {
+    cursor: default;
+    background: #c2dad2;
   }
   .cart {
     width: 26px;
@@ -71,7 +100,37 @@
     font-weight: bold;
     margin-top: 3px;
   }
+  .price.up {
+    color: #f34d4d;
+  }
+  .price.down {
+    color: #4b9059;
+  }
   .controls {
     overflow: hidden;
+  }
+  .budget {
+    width: 32px;
+    height: 32px;
+    background: #6977b7;
+    border-radius: 50%;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    cursor: pointer;
+  }
+  .budget:hover {
+    background: #5c6073;
+    width: 34px;
+    height: 34px;
+    top: -5px;
+    right: -5px;
+  }
+  .busket {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
   }
 </style>

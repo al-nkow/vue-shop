@@ -18,7 +18,8 @@ export default {
     }
   },
   mounted() {
-    this.$options.interval = setInterval(this.getData, 15000)
+    this.$store.dispatch('GET_DATA')
+    this.$options.interval = setInterval(this.getData, 3000)
   },
   beforeDestroy () {
     clearInterval(this.$options.interval)

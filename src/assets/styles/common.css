@@ -28,3 +28,7 @@ html, body {
   background-size: cover;
   min-height: 100%;
 }
+
+.good {
+  color: #3cbf94!important;
+}

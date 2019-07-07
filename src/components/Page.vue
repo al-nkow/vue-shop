@@ -1,8 +1,8 @@
 <template>
   <div class="wrap">
-    <Header />
+    <Header/>
     <div class="products">
-      <Category v-for="item in items" :data="item"/>
+      <Category v-for="(item, name) in items" :data="item" :key="name"/>
     </div>
   </div>
 </template>

@@ -9,6 +9,8 @@
 <script>
 //  import { mapState } from 'vuex';
 
+  let timeout = null;
+
   export default {
     name: 'Rate',
     data: () => ({
@@ -20,24 +22,20 @@
           return this.$store.state.rate
         },
         set (value) {
-          this.$store.commit('SET_RATE', value)
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            const res = value.replace(/[^\d.]/g, '');
+            this.$store.commit('SET_RATE', res)
+            this.$store.commit('UPDATE_PRICE')
+          }, 500);
         }
       }
     }
 //    computed: mapState({
 //      rate: state => state.rate
 //    })
-//    methods: {
-//      log () {
-//        console.log('Hello world')
-//      }
-//    },
-//    created () {
-//      this.$options.interval = setInterval(this.log, 1000)
-//    },
-//    beforeDestroy () {
-//      clearInterval(this.$options.interval)
-//    }
+
+
   }
 </script>
 
