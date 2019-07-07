@@ -10,6 +10,7 @@ import 'vue-awesome/icons/angle-down'
 import 'vue-awesome/icons/angle-up'
 import 'vue-awesome/icons/cart-plus'
 import 'vue-awesome/icons/shopping-basket'
+import 'vue-awesome/icons/trash-alt'
 
 import Icon from 'vue-awesome/components/Icon'
 

@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <div v-if="data.cart" class="budget">
+    <div v-if="data.cart" class="budget" @click="openCart">
       <v-icon class="busket" name="shopping-basket"/>
     </div>
     <div class="title">
@@ -36,11 +36,15 @@
       data: Object
     },
     methods: {
+      openCart() {
+        this.$store.commit('TOGGLE_CART', true);
+      },
       addToCart() {
         if (this.data.P === this.data.cart) return;
         this.$store.commit('ADD_TO_CART', this.data.T);
+        this.$store.commit('SET_TOTAL');
         this.$toasted.show('Товар добавлен в корзину', {
-          position: 'top-right',
+          position: 'bottom-right',
           duration: 1000,
           className: 'good'
         })

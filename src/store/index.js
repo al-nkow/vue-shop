@@ -10,6 +10,9 @@ export const store = new Vuex.Store({
     goods: null,
     rate: null,
     oldPrice: null,
+    amount: 0,
+    count: 0,
+    cartModal: false,
   },
 
   getters: {
@@ -20,57 +23,40 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
+    TOGGLE_CART: (state, payload) => {
+      state.cartModal = payload;
+    },
     SET_DATA: (state, payload) => {
       state.goods = payload;
     },
     SET_RATE: (state, payload) => {
       state.rate = payload;
     },
-
-
-
-
-
-
-
-
+    SET_TOTAL: (state, payload) => {
+      let amount = 0;
+      let count = 0;
+      state.goods.forEach(item => {
+        if (item.cart) {
+          amount = amount + item.cart * item.price;
+          count = count + item.cart;
+        }
+      });
+      state.amount = +amount.toFixed(2);
+      state.count = count;
+    },
     ADD_TO_CART: (state, payload) => {
       state.goods.forEach((item, index) => {
         if (item.T === payload) {
           Vue.set(state.goods[index], 'cart', item.cart ? item.cart + 1 : 1)
         }
       });
-      console.log('C >>>>>>', state.goods);
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     UPDATE_PRICE: (state) => {
       const { rate, goods } = state;
       goods.forEach((item) => {
         item.prevPrice = item.price;
         item.price = +(item.C * rate).toFixed(2);
       })
-    },
-
-
-
-
-
-    ADD_TODO: (state, payload) => {
-      state.todos.push(payload);
     },
   },
 
@@ -97,62 +83,16 @@ export const store = new Vuex.Store({
           }, Object.create(null))
         }
 
-        console.log('OLD >>>>>>', oldPrice);
-
         addInfo(data, rate, oldPrice);
 
-
-
-
-
-
-
-        console.log('DATA >>>>>>', data);
-
-
-
-
-
-
         context.commit('SET_DATA', data);
-
-
-
-
+        context.commit('SET_TOTAL', data);
 
       } catch(error) {
         console.log('GET DATA ERROR:', error);
         alert('ERROR');
       }
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // SAVE_TODO: async (context, payload) => {
-    //   let {data} = await Axios.post('http://yourwebsite.com/api/todo');
-    //   context.commit('ADD_TODO', payload);
-    // },
   },
 });
 
@@ -171,17 +111,9 @@ function addInfo(data, rate, oldPrice) {
       item.cart = oldPrice[item.T].cart;
     }
 
-
-
     item.price = +(item.C * rate).toFixed(2);
   })
 }
-
-
-
-
-
-
 
 function groupData(data) {
   if (!data || !data.length) return [];

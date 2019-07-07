@@ -1,16 +1,19 @@
 <template>
   <div id="app" class="main-wrap">
     <Page />
+    <CartModal />
   </div>
 </template>
 
 <script>
 import Page from './components/Page.vue'
+import CartModal from './components/CartModal.vue'
 
 export default {
   name: 'app',
   components: {
-    Page
+    Page,
+    CartModal
   },
   methods: {
     getData () {
@@ -19,7 +22,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('GET_DATA')
-    this.$options.interval = setInterval(this.getData, 3000)
+    this.$options.interval = setInterval(this.getData, 15000)
   },
   beforeDestroy () {
     clearInterval(this.$options.interval)

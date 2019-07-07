@@ -27,6 +27,7 @@
             const res = value.replace(/[^\d.]/g, '');
             this.$store.commit('SET_RATE', res)
             this.$store.commit('UPDATE_PRICE')
+            this.$store.commit('SET_TOTAL')
           }, 500);
         }
       }

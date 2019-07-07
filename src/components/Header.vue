@@ -3,16 +3,19 @@
     <v-icon class="logo" name="carrot"/>
     <div class="name">Stuffshop</div>
     <Rate />
+    <HeadCart />
   </div>
 </template>
 
 <script>
   import Rate from './Rate.vue'
+  import HeadCart from './HeadCart.vue'
 
   export default {
     name: 'Header',
     components: {
-      Rate
+      Rate,
+      HeadCart
     }
   }
 </script>
