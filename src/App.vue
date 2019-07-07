@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="main-wrap">
     <Page />
   </div>
 </template>
@@ -11,18 +11,14 @@ export default {
   name: 'app',
   components: {
     Page
+  },
+  mounted() {
+    this.$store.dispatch('GET_DATA');
   }
 }
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
   @import 'assets/styles/common.css';
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    padding-top: 40px;
-  }
 </style>

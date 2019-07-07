@@ -2,7 +2,7 @@
   <div class="wrap">
     <Header />
     <div class="products">
-      <Category />
+      <Category v-for="item in items" :data="item"/>
     </div>
   </div>
 </template>
@@ -16,6 +16,11 @@
     components: {
       Header,
       Category
+    },
+    computed: {
+      items() {
+        return this.$store.getters.GOODS
+      }
     },
   }
 </script>

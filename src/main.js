@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+import {store} from './store'
+
 import 'vue-awesome/icons/carrot'
 import 'vue-awesome/icons/angle-down'
 import 'vue-awesome/icons/angle-up'
+import 'vue-awesome/icons/cart-plus'
 
 import Icon from 'vue-awesome/components/Icon'
 
@@ -12,5 +15,6 @@ Vue.config.productionTip = false
 Vue.component('v-icon', Icon)
 
 new Vue({
+  store,
   render: h => h(App),
 }).$mount('#app')
