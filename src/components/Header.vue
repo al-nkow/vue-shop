@@ -2,12 +2,18 @@
   <div class="header">
     <v-icon class="logo" name="carrot"/>
     <div class="name">Stuffshop</div>
+    <Rate />
   </div>
 </template>
 
 <script>
+  import Rate from './Rate.vue'
+
   export default {
     name: 'Header',
+    components: {
+      Rate
+    }
   }
 </script>
 

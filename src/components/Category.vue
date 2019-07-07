@@ -1,10 +1,10 @@
 <template>
   <div class="block">
-    <div class="name">
-      <v-icon class="arrow" name="angle-down"/>
+    <div class="name" @click="show = !show">
+      <v-icon class="arrow" :class="{'closed': !show}" name="angle-down"/>
       {{ data[0].group_name }}
     </div>
-    <div class="products">
+    <div class="products" v-if="show">
       <Product v-for="item in data" :data="item"/>
     </div>
   </div>
@@ -18,12 +18,12 @@
     components: {
       Product
     },
+    data: () => ({
+      show: true
+    }),
     props: {
       data: Array
     },
-    mounted() {
-      console.log('>>>>>>', this.data);
-    }
   }
 </script>
 
@@ -52,6 +52,10 @@
     top: 0;
     left: 0;
     color: #656a80;
+    transition: all 0.2s linear;
+  }
+  .arrow.closed {
+    transform: rotate(-90deg);
   }
   .products {
     text-align: left;

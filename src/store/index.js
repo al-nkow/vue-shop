@@ -8,17 +8,22 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     goods: null,
+    rate: null
   },
 
   getters: {
     GOODS: state => {
-      return state.goods;
+      const groupedData = groupData(state.goods);
+      return groupedData;
     },
   },
 
   mutations: {
     SET_DATA: (state, payload) => {
       state.goods = payload;
+    },
+    SET_RATE: (state, payload) => {
+      state.rate = payload;
     },
 
     ADD_TODO: (state, payload) => {
@@ -28,22 +33,27 @@ export const store = new Vuex.Store({
 
   actions: {
     GET_DATA: async (context, payload) => {
-      // context.commit('SET_TODO', data);
       try {
         const response = await axios.get('data.json')
         const data = response.data.Value.Goods;
 
-        addInfo(data);
 
-        const groupedData = groupData(data);
+        var rate = getRate(20, 80);
+        context.commit('SET_RATE', rate);
+
+
+        addInfo(data, rate);
+
+
+
 
 
 
 
         console.log('DATA >>>>>>', data);
-        console.log('GROUPED DATA >>>>>>', groupedData);
 
-        context.commit('SET_DATA', groupedData);
+
+        context.commit('SET_DATA', data);
 
 
 
@@ -66,20 +76,24 @@ export const store = new Vuex.Store({
 });
 
 
-function addInfo(data) {
+function addInfo(data, rate) {
   data.forEach(item => {
     item.group_name = info[item.G].G;
     item.product_name = info[item.G].B[item.T].N;
+    item.prevPrice = item.price;
+    item.price = +(item.C * rate).toFixed(2);
   })
 }
 
 function groupData(data) {
-  let result = [];
-  result = data.reduce((res, item) => {
+  if (!data || !data.length) return [];
+  return data.reduce((res, item) => {
     res[item.G] = res[item.G] || [];
     res[item.G].push(item);
     return res;
   }, Object.create(null));
+}
 
-  return result;
+function getRate(min, max) {
+  return +(Math.random() * (max - min + 1) + min).toFixed(2);
 }

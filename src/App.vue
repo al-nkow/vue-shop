@@ -12,8 +12,16 @@ export default {
   components: {
     Page
   },
+  methods: {
+    getData () {
+      this.$store.dispatch('GET_DATA')
+    }
+  },
   mounted() {
-    this.$store.dispatch('GET_DATA');
+    this.$options.interval = setInterval(this.getData, 15000)
+  },
+  beforeDestroy () {
+    clearInterval(this.$options.interval)
   }
 }
 </script>

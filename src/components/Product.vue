@@ -9,7 +9,7 @@
       </div>
       <div class="amount">({{ data.P }})</div>
       <div class="price">
-        {{ data.C }}
+        {{ data.price }}
         <span>₽</span>
       </div>
     </div>

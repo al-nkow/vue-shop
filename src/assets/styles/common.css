@@ -26,4 +26,5 @@ html, body {
   background: linear-gradient(to bottom, rgba(221,187,184,1) 0%, rgba(224,171,164,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddbbb8', endColorstr='#e0aba4', GradientType=0 );
   background-size: cover;
+  min-height: 100%;
 }
