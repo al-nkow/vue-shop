@@ -11,18 +11,18 @@
 </template>
 
 <script>
-  import Product from './Product.vue'
+  import Product from './Product.vue';
 
   export default {
     name: 'Category',
     components: {
-      Product
+      Product,
     },
     data: () => ({
-      show: true
+      show: true,
     }),
     props: {
-      data: Array
+      data: Array,
     },
   }
 </script>

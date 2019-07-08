@@ -8,14 +8,14 @@
 </template>
 
 <script>
-  import Rate from './Rate.vue'
-  import HeadCart from './HeadCart.vue'
+  import Rate from './Rate.vue';
+  import HeadCart from './HeadCart.vue';
 
   export default {
     name: 'Header',
     components: {
       Rate,
-      HeadCart
+      HeadCart,
     }
   }
 </script>

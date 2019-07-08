@@ -8,18 +8,18 @@
 </template>
 
 <script>
-  import Header from './Header.vue'
-  import Category from './Category.vue'
+  import Header from './Header.vue';
+  import Category from './Category.vue';
 
   export default {
     name: 'Page',
     components: {
       Header,
-      Category
+      Category,
     },
     computed: {
       items() {
-        return this.$store.getters.GOODS
+        return this.$store.getters.GOODS;
       }
     },
   }

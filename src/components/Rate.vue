@@ -7,36 +7,29 @@
 </template>
 
 <script>
-//  import { mapState } from 'vuex';
-
   let timeout = null;
 
   export default {
     name: 'Rate',
     data: () => ({
-      value: 20
+      value: 20,
     }),
     computed: {
       rate: {
         get () {
-          return this.$store.state.rate
+          return this.$store.state.rate;
         },
         set (value) {
           clearTimeout(timeout);
           timeout = setTimeout(() => {
             const res = value.replace(/[^\d.]/g, '');
-            this.$store.commit('SET_RATE', res)
-            this.$store.commit('UPDATE_PRICE')
-            this.$store.commit('SET_TOTAL')
+            this.$store.commit('SET_RATE', res);
+            this.$store.commit('UPDATE_PRICE');
+            this.$store.commit('SET_TOTAL');
           }, 500);
         }
       }
     }
-//    computed: mapState({
-//      rate: state => state.rate
-//    })
-
-
   }
 </script>
 
@@ -49,7 +42,7 @@
   }
   .rate-inp {
     border: none;
-    backgrount: #ffffff;
+    background: #ffffff;
     padding: 4px 6px;
     border-radius: 2px;
     margin: 3px;

@@ -32,29 +32,15 @@ export const store = new Vuex.Store({
     SET_RATE: (state, payload) => {
       state.rate = payload;
     },
-    SET_TOTAL: (state, payload) => {
-      let amount = 0;
-      let count = 0;
-      state.goods.forEach(item => {
-        if (item.cart) {
-          amount = amount + item.cart * item.price;
-          count = count + item.cart;
-        }
-      });
-      state.amount = +amount.toFixed(2);
-      state.count = count;
+    SET_TOTAL: (state) => {
+      const total = countTotal(state.goods);
+      state.amount = +total.amount.toFixed(2);
+      state.count = total.count;
     },
-    ADD_TO_CART: (state, payload) => {
+    PUT_IN_CART: (state, payload) => {
       state.goods.forEach((item, index) => {
-        if (item.T === payload) {
-          Vue.set(state.goods[index], 'cart', item.cart ? item.cart + 1 : 1)
-        }
-      });
-    },
-    REMOVE_FROM_CART: (state, payload) => {
-      state.goods.forEach((item, index) => {
-        if (item.T === payload) {
-          state.goods[index].cart = 0
+        if (item.T === payload.id) {
+          Vue.set(state.goods[index], 'cart', payload.value);
         }
       });
     },
@@ -68,33 +54,19 @@ export const store = new Vuex.Store({
   },
 
   actions: {
-    GET_DATA: async (context, payload) => {
+    GET_DATA: async (context) => {
       try {
         const response = await axios.get('data.json')
         const data = response.data.Value.Goods;
 
+        const rate = getRate(20, 80);
+        const prevCartData = savePreviousState(context.state.goods);
 
-        var rate = getRate(20, 80);
+        additionalInfo(data, rate, prevCartData);
+
         context.commit('SET_RATE', rate);
-
-        // Сохраним предыдущую цену в рублях
-        let oldPrice = null;
-        const goods = context.state.goods;
-        if (goods) {
-          oldPrice = goods.reduce((res, item) => {
-            res[item.T] = {
-              price: item.price,
-              cart: item.cart
-            };
-            return res;
-          }, Object.create(null))
-        }
-
-        addInfo(data, rate, oldPrice);
-
         context.commit('SET_DATA', data);
         context.commit('SET_TOTAL', data);
-
       } catch(error) {
         console.log('GET DATA ERROR:', error);
         alert('ERROR');
@@ -103,25 +75,45 @@ export const store = new Vuex.Store({
   },
 });
 
+/**
+ * In the case of updating the list of products, we may lose information about
+ * the goods in the cart - therefore, it is necessary to save this data
+ */
+function savePreviousState(goods) {
+  let oldPrice = null;
+  if (goods) {
+    oldPrice = goods.reduce((res, item) => {
+      res[item.T] = {
+        price: item.price,
+        cart: item.cart,
+      };
+      return res;
+    }, Object.create(null));
+  }
+  return oldPrice;
+}
 
-
-
-
-function addInfo(data, rate, oldPrice) {
+/**
+ * Add additional information to the goods
+ */
+function additionalInfo(data, rate, prevCartData) {
   data.forEach(item => {
     item.group_name = info[item.G].G;
     item.product_name = info[item.G].B[item.T].N;
 
-    // Save previous price
-    if (oldPrice && oldPrice[item.T]) {
-      item.prevPrice = oldPrice[item.T].price;
-      item.cart = oldPrice[item.T].cart;
+    // Save previous price and amount added to cart
+    if (prevCartData && prevCartData[item.T]) {
+      item.prevPrice = prevCartData[item.T].price;
+      item.cart = prevCartData[item.T].cart;
     }
 
     item.price = +(item.C * rate).toFixed(2);
   })
 }
 
+/**
+ * Group data into categories to display products
+ */
 function groupData(data) {
   if (!data || !data.length) return [];
   return data.reduce((res, item) => {
@@ -131,6 +123,24 @@ function groupData(data) {
   }, Object.create(null));
 }
 
+/**
+ * Generate a currency rate in a given range
+ */
 function getRate(min, max) {
   return +(Math.random() * (max - min + 1) + min).toFixed(2);
+}
+
+/**
+ * Calculation of the total amount and quantity of goods in the basket
+ */
+function countTotal(goods) {
+  return goods.reduce((res, item) => {
+    if (!item.cart) return res;
+    res.amount = res.amount + item.cart * item.price;
+    res.count = res.count + item.cart;
+    return res;
+  }, {
+    amount: 0,
+    count: 0,
+  });
 }

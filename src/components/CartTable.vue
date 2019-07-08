@@ -12,7 +12,18 @@
       <tbody>
       <tr v-for="item in goods" :key="item.T">
         <td>{{ item.product_name }}</td>
-        <td>{{ item.cart }} шт.</td>
+        <td>
+          <input
+            class="cart-inp"
+            type="text"
+            :value="item.cart"
+            @keyup="onKeyupInput($event, item)"
+            @change="onChangeInput($event, item)"
+          > шт.
+          <div class="warning" v-if="item.cart === item.P">
+            Количество ограничено
+          </div>
+        </td>
         <td>{{ item.price }} руб.</td>
         <td>
             <span @click="deleteItem(item)">
@@ -35,9 +46,30 @@
     name: 'CartTable',
     methods: {
       deleteItem(item) {
-        this.$store.commit('REMOVE_FROM_CART', item.T)
+        const payload = { id: item.T, value: 0};
+
+        this.$store.commit('PUT_IN_CART', payload);
         this.$store.commit('SET_TOTAL');
-        if (!this.goods.length) this.$store.commit('TOGGLE_CART', false)
+
+        if (!this.goods.length) this.$store.commit('TOGGLE_CART', false);
+      },
+      onKeyupInput(event, item) {
+        const inpValue = event.target.value;
+
+        if (inpValue) {
+          const val = inpValue.replace(/[^\d]/g, '');
+          const result = val > item.P ? item.P : val;
+          const payload = { id: item.T, value: +result};
+
+          event.target.value = result;
+
+          this.$store.commit('PUT_IN_CART', payload);
+          this.$store.commit('SET_TOTAL');
+        }
+      },
+      // If we leave the field unchanged - it is necessary to restore the previous value
+      onChangeInput(event, item) {
+        if (!+event.target.value) event.target.value = item.cart;
       }
     },
     computed: mapState({
@@ -74,5 +106,21 @@
   }
   .delete:hover {
     color: #f34d4d;
+  }
+  .cart-inp {
+    border: 1px solid #d3d7e6;
+    background: #ffffff;
+    padding: 4px 6px;
+    border-radius: 2px;
+    margin: 3px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    width: 40px;
+    font-size: 14px;
+    color: #474a58;
+  }
+  .warning {
+    color: #f34d4d;
+    font-size: 11px;
   }
 </style>

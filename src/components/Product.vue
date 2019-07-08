@@ -33,21 +33,29 @@
   export default {
     name: 'Product',
     props: {
-      data: Object
+      data: Object,
     },
     methods: {
       openCart() {
         this.$store.commit('TOGGLE_CART', true);
       },
       addToCart() {
-        if (this.data.P === this.data.cart) return;
-        this.$store.commit('ADD_TO_CART', this.data.T);
-        this.$store.commit('SET_TOTAL');
-        this.$toasted.show('Товар добавлен в корзину', {
+        const cart = this.data.cart;
+        if (this.data.P === cart) return;
+
+        const payload = {
+          id: this.data.T,
+          value: cart ? cart + 1 : 1
+        }
+        const toastOpts = {
           position: 'bottom-right',
           duration: 1000,
-          className: 'good'
-        })
+          className: 'good',
+        }
+
+        this.$store.commit('PUT_IN_CART', payload);
+        this.$store.commit('SET_TOTAL');
+        this.$toasted.show('Товар добавлен в корзину', toastOpts);
       }
     }
   }

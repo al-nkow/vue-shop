@@ -20,7 +20,7 @@
     },
     computed: mapState({
       price: state => state.amount,
-      count: state => state.count
+      count: state => state.count,
     })
   }
 </script>

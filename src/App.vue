@@ -6,26 +6,26 @@
 </template>
 
 <script>
-import Page from './components/Page.vue'
-import CartModal from './components/CartModal.vue'
+import Page from './components/Page.vue';
+import CartModal from './components/CartModal.vue';
 
 export default {
   name: 'app',
   components: {
     Page,
-    CartModal
+    CartModal,
   },
   methods: {
     getData () {
-      this.$store.dispatch('GET_DATA')
+      this.$store.dispatch('GET_DATA');
     }
   },
   mounted() {
-    this.$store.dispatch('GET_DATA')
-    this.$options.interval = setInterval(this.getData, 15000)
+    this.getData();
+    this.$options.interval = setInterval(this.getData, 15000);
   },
   beforeDestroy () {
-    clearInterval(this.$options.interval)
+    clearInterval(this.$options.interval);
   }
 }
 </script>

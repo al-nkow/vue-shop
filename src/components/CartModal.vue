@@ -19,24 +19,24 @@
 </template>
 
 <script>
-  import CartTable from './CartTable.vue'
+  import CartTable from './CartTable.vue';
   import { mapState } from 'vuex';
 
   export default {
     name: 'CartModal',
     components: {
-      CartTable
+      CartTable,
     },
     methods: {
       close(event) {
         if (event.target.classList[0] === 'js-close') {
-          this.$store.commit('TOGGLE_CART', false)
+          this.$store.commit('TOGGLE_CART', false);
         }
       },
     },
     computed: mapState({
       cartModal: state => state.cartModal,
-      amount: state => state.amount
+      amount: state => state.amount,
     })
   }
 </script>
@@ -55,7 +55,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 650px;
+    width: 680px;
     min-height: 100px;
     background: #ffffff;
     border-radius: 2px;
