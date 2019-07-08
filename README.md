@@ -1,5 +1,8 @@
 ## VUE Frontend developer test task
 
+Результат можно посмотреть по ссылке  
+[https://al-nkow.github.io/vue-shop/](https://al-nkow.github.io/vue-shop/)
+
 #### Задание
 
 Получить данные из файла data.json и вывести их на страницу как это показано на рис.`пример.png`
